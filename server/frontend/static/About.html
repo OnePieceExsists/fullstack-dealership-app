@@ -1,6 +1,8 @@
 <html>
+    {% load static %}
 <head>
-  <!-- Link the style sheet here -->
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
 </head>
 <div>
   <nav class="navbar navbar-expand-lg navbar-light" style="background-color:darkturquoise; height: 1in;">
@@ -27,36 +29,37 @@
   
     <div class="card" style="width: 80%;margin: auto; margin-top:5%;">
       <div class="banner" name="about-header">
-      <!-- Insert header information here -->
+        <h1>About Us</h1>
+        Welcome to Best Cars dealership, home to the best cars in North America. We deal in sale of domestic and imported cars at reasonable prices.
       </div>
       <div style="display: flex;flex-direction: row; margin:auto">
       <div class="card" style="width: 30%;">
-        <img class="card-img-top" src="/static/person.png" alt="Card image">
+        <img class="card-img-top" src="{% static 'person1.jpg' %}" alt="Person1">
         <div class="card-body">
-          <p class="title">Person1</p>
-          <p>Person1 Title</p>
-          <p class="card-text">Some text that explains the person1 in about 2 short sentences</p>
-          <p>person1@example.com</p>
+          <p class="title">Jason Rivers</p>
+          <p>Senior Automotive Consultant<br>B.A. in Business Management</p>
+          <p class="card-text">A seasoned automotive specialist with over a decade of experience in matching customers with their dream vehicles. Person1 combines expert insight with an easygoing attitude that makes every dealership visit a pleasure.</p>
+          <p>j.rivers@bestcarsdealership.com</p>
         </div>
       </div>
 
       <div class="card" style="width: 30%;">
-        <img class="card-img-top" src="/static/person.png" alt="Card image">
+        <img class="card-img-top" src="{% static 'person2.jpg' %}" alt="Person2">
         <div class="card-body">
-          <p class="title">Person2</p>
-          <p>Person2 Title</p>
-          <p class="card-text">Some text that explains the person2 in about 2 short sentences</p>
-          <p>person2@example.com</p>
+          <p class="title">Marcus Steele</p>
+          <p>Finance & Sales Lead<br>M.B.A., Certified Dealership Strategist</p>
+          <p class="card-text">With a background in finance and a passion for precision, Person2 ensures that every deal is transparent and fair. His calm demeanor and attention to detail have made him a customer favorite for those looking for honest advice.</p>
+          <p>m.steele@bestcarsdealership.com</p>
         </div>
       </div>
 
       <div class="card" style="width: 30%;">
-        <img class="card-img-top" src="/static/person.png" alt="Card image">
+        <img class="card-img-top" src="{% static 'person3.jpg' %}" alt="Person3">
         <div class="card-body">
-          <p class="title">Person3</p>
-          <p>Person3 Title</p>
-          <p class="card-text">Some text that explains the person3 in about 2 short sentences</p>
-          <p>person3@example.com</p>
+          <p class="title">Natalie Vega</p>
+          <p>Customer Experience Manager<br>B.S. in Communications</p>
+          <p class="card-text">Energetic, knowledgeable, and deeply committed to customer satisfaction, Person3 leads the dealership’s outreach efforts. Her intuitive understanding of client needs and vibrant personality bring warmth to every interaction.</p>
+          <p>n.vega@bestcarsdealership.com</p>
         </div>
       </div>
     </div>
