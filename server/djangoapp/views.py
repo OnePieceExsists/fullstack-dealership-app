@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from .populate import initiate
+from .models import CarMake, CarModel
 
 # 🛠️ Logger setup
 logger = logging.getLogger(__name__)
@@ -78,6 +79,18 @@ def register_user(request):
 
     logger.warning(f"Invalid request method: {request.method}")
     return JsonResponse({"error": "Invalid request method"}, status=405)
+
+def get_cars(request):
+    initiate()  # Force population
+    count = CarMake.objects.filter().count()
+    print(count)
+    if(count == 0):
+        initiate()
+    car_models = CarModel.objects.select_related('car_make')
+    cars = []
+    for car_model in car_models:
+        cars.append({"CarModel": car_model.name, "CarMake": car_model.car_make.name})
+    return JsonResponse({"CarModels":cars})
 
 # 🏢 Dealership views (to be implemented)
 # def get_dealerships(request):
