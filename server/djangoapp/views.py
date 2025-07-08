@@ -10,6 +10,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from .populate import initiate
 from .models import CarMake, CarModel
+from .restapis import get_request, analyze_review_sentiments, post_review
 
 # 🛠️ Logger setup
 logger = logging.getLogger(__name__)
@@ -92,18 +93,46 @@ def get_cars(request):
         cars.append({"CarModel": car_model.name, "CarMake": car_model.car_make.name})
     return JsonResponse({"CarModels":cars})
 
-# 🏢 Dealership views (to be implemented)
-# def get_dealerships(request):
-#     ...
+#Update the `get_dealerships` render list of dealerships all by default, particular state if state is passed
+def get_dealerships(request, state="All"):
+    if(state == "All"):
+        endpoint = "/fetchDealers"
+    else:
+        endpoint = "/fetchDealers/"+state
+    dealerships = get_request(endpoint)
+    return JsonResponse({"status":200,"dealers":dealerships})
 
-# 📣 Dealer review views (to be implemented)
-# def get_dealer_reviews(request, dealer_id):
-#     ...
+def get_dealer_reviews(request, dealer_id):
+    if dealer_id:
+        endpoint = f"/fetchReviews/dealer/{dealer_id}"
+        reviews = get_request(endpoint)
+        for review_detail in reviews:
+            response = analyze_review_sentiments(review_detail.get('review', ''))
+            print(response)
+            review_detail['sentiment'] = response.get('sentiment', 'neutral')
+        return JsonResponse({"status": 200, "reviews": reviews})
+    else:
+        return JsonResponse({"status": 400, "message": "Bad Request"})
 
-# 📋 Dealer detail views (to be implemented)
-# def get_dealer_details(request, dealer_id):
-#     ...
 
-# ✍️ Review submission view (to be implemented)
-# def add_review(request):
-#     ...
+def get_dealer_details(request, dealer_id):
+    if dealer_id:
+        endpoint = f"/fetchDealer/{dealer_id}"
+        dealership = get_request(endpoint)
+        return JsonResponse({"status": 200, "dealer": dealership})
+    else:
+        return JsonResponse({"status": 400, "message": "Bad Request"})
+
+
+def add_review(request):
+    if not request.user.is_anonymous:
+        data = json.loads(request.body)
+        try:
+            response = post_review(data)
+            print("📝 Review post response:", response)
+            return JsonResponse({"status": 200, "message": "Review submitted successfully"})
+        except Exception as e:
+            print("❌ Post error:", e)
+            return JsonResponse({"status": 401, "message": "Error in posting review"})
+    else:
+        return JsonResponse({"status": 403, "message": "Unauthorized"})
